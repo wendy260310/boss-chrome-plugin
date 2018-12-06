@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+    #main-panel {
+        width: 300px;
+        height: 100px;
+        position: relative;
+    }
+
+    .m-t-5 {
+        margin-top: 5px;
+    }
+
+    .m-t-10 {
+        margin-top: 5px;
+    }
+
+    #say-hello {
+        margin-left: 40%;
+    }
+
+</style>
+<body>
+<div id="main-panel">
+    <button id="say-hello">一键打招呼</button>
+    <hr>
+    <span>简历筛选条件：同boss</span>
+    <div class="m-t-5">薪水</div>
+    <div id="salary" class="m-t">
+        <label for="s1">不限</label>
+        <input type="radio" value="不限" name="salary" id="s1">
+        <label for="s2">3k以下</label>
+        <input type="radio" value="3k以下" name="salary" id="s2">
+        <label for="s3">3k-5k</label>
+        <input type="radio" value="3k-5k" name="salary" id="s3">
+        <label for="s4">5k-10k</label>
+        <input type="radio" value="5k-10k" name="salary" id="s4">
+        <label for="s5">10k-20k</label>
+        <input type="radio" value="10k-20k" name="salary" id="s5">
+        <label for="s6">20k-50k</label>
+        <input type="radio" value="20k-50k" name="salary" id="s6">
+        <label for="s7">50K以上</label>
+        <input type="radio" value="50k以上" name="salary" id="s7">
+    </div>
+
+    <div class="m-t-5">经验</div>
+    <div id="work-age" class="m-t">
+        <label for="s8">不限</label>
+        <input type="radio" value="不限" name="work-age" id="s8">
+        <label for="s9">应届生</label>
+        <input type="radio" value="3k以下" name="work-age" id="s9">
+        <label for="s10">1年以内</label>
+        <input type="radio" value="3k-5k" name="work-age" id="s10">
+        <label for="s11">1-3年</label>
+        <input type="radio" value="5k-10k" name="work-age" id="s11">
+        <label for="s12">3-5年</label>
+        <input type="radio" value="10k-20k" name="work-age" id="s12">
+        <label for="s13">5-10年</label>
+        <input type="radio" value="20k-50k" name="work-age" id="s13">
+        <label for="s14">10年以上</label>
+        <input type="radio" value="20k-50k" name="work-age" id="s14">
+    </div>
+
+    <div class="m-t-5">学历</div>
+    <div id="education" class="m-t">
+        <label for="s15">不限</label>
+        <input type="radio" value="不限" name="education" id="s15" checked="checked">
+        <label for="s16">初中</label>
+        <input type="radio" value="3k以下" name="education" id="s16">
+        <label for="s17">中专</label>
+        <input type="radio" value="3k-5k" name="education" id="s17">
+        <label for="s18">高中</label>
+        <input type="radio" value="5k-10k" name="education" id="s18">
+        <label for="s19">大专</label>
+        <input type="radio" value="10k-20k" name="education" id="s19">
+        <label for="s20">本科</label>
+        <input type="radio" value="20k-50k" name="education" id="s20">
+        <label for="s21">硕士</label>
+        <input type="radio" value="20k-50k" name="education" id="s21">
+        <label for="s22">博士</label>
+        <input type="radio" value="20k-50k" name="education" id="s22">
+    </div>
+
+    <hr>
+    精确筛选
+    <div class="m-t-5">
+        <label>最大年龄</label>
+        <input type="number" value="30">
+    </div>
+    <div class="m-t-5">
+        <label>最小工龄</label>
+        <input type="number" value="3">
+    </div>
+    <div class="m-t-5">
+        <label>最大工龄</label>
+        <input type="number" value="5">
+    </div>
+    <div class="m-t-5">
+        <label>最低待遇要求(单位千k)</label>
+        <input type="number" value="25">
+    </div>
+</div>
+<script src="../js/popup.js"></script>
+</body>
+</html>
