@@ -31,78 +31,102 @@
     <hr>
     <span>简历筛选条件：同boss</span>
     <div class="m-t-5">薪水</div>
-    <div id="salary" class="m-t">
-        <label for="s1">不限</label>
-        <input type="radio" value="不限" name="salary" id="s1">
-        <label for="s2">3k以下</label>
-        <input type="radio" value="3k以下" name="salary" id="s2">
-        <label for="s3">3k-5k</label>
-        <input type="radio" value="3k-5k" name="salary" id="s3">
-        <label for="s4">5k-10k</label>
-        <input type="radio" value="5k-10k" name="salary" id="s4">
-        <label for="s5">10k-20k</label>
-        <input type="radio" value="10k-20k" name="salary" id="s5">
-        <label for="s6">20k-50k</label>
-        <input type="radio" value="20k-50k" name="salary" id="s6">
-        <label for="s7">50K以上</label>
-        <input type="radio" value="50k以上" name="salary" id="s7">
+    <div id="salary" class="m-t group" data-keyid="salary">
+        <label for="s1" data-keyvalue="0">不限</label>
+        <input type="radio" value="不限" name="salary" id="s1" data-keyvalue="0">
+        <label for="s2" data-keyvalue="402">3k以下</label>
+        <input type="radio" value="3k以下" name="salary" id="s2" data-keyvalue="402">
+        <label for="s3" data-keyvalue="403">3k-5k</label>
+        <input type="radio" value="3k-5k" name="salary" id="s3" data-keyvalue="403">
+        <label for="s4" data-keyvalue="404">5k-10k</label>
+        <input type="radio" value="5k-10k" name="salary" id="s4" data-keyvalue="404">
+        <label for="s5" data-keyvalue="405">10k-20k</label>
+        <input type="radio" value="10k-20k"
+               name="salary" id="s5" data-keyvalue="405">
+        <label for="s6" data-keyvalue="406">20k-50k</label>
+        <input type="radio" value="20k-50k" name="salary" id="s6" data-keyvalue="406">
+        <label for="s7" data-keyvalue="407">50K以上</label>
+        <input type="radio" value="50k以上" name="salary" id="s7" data-keyvalue="407">
     </div>
 
-    <div class="m-t-5">经验</div>
-    <div id="work-age" class="m-t">
-        <label for="s8">不限</label>
-        <input type="radio" value="不限" name="work-age" id="s8">
-        <label for="s9">应届生</label>
-        <input type="radio" value="3k以下" name="work-age" id="s9">
-        <label for="s10">1年以内</label>
-        <input type="radio" value="3k-5k" name="work-age" id="s10">
-        <label for="s11">1-3年</label>
-        <input type="radio" value="5k-10k" name="work-age" id="s11">
-        <label for="s12">3-5年</label>
-        <input type="radio" value="10k-20k" name="work-age" id="s12">
-        <label for="s13">5-10年</label>
-        <input type="radio" value="20k-50k" name="work-age" id="s13">
-        <label for="s14">10年以上</label>
-        <input type="radio" value="20k-50k" name="work-age" id="s14">
+    <div class="m-t-5 group">经验</div>
+    <div id="experience" class="m-t" data-keyid="experience">
+        <label for="s8" data-keyvalue="0">不限</label>
+        <input type="radio" value="不限" name="work-age" id="s8" data-keyvalue="0">
+        <label for="s9" data-keyvalue="102">应届生</label>
+        <input type="radio" name="work-age" id="s9" data-keyvalue="102">
+        <label for="s10" data-keyvalue="103">1年以内</label>
+        <input type="radio" data-keyvalue="103" name="work-age" id="s10">
+        <label for="s11" data-keyvalue="104">1-3年</label>
+        <input type="radio" data-keyvalue="104" name="work-age" id="s11">
+        <label for="s12" data-keyvalue="105">3-5年</label>
+        <input type="radio" data-keyvalue="105" name="work-age" id="s12">
+        <label for="s13" data-keyvalue="106">5-10年</label>
+        <input type="radio" data-keyvalue="106" name="work-age" id="s13">
+        <label for="s14" data-keyvalue="107">10年以上</label>
+        <input type="radio" data-keyvalue="107" name="work-age" id="s14">
     </div>
 
-    <div class="m-t-5">学历</div>
-    <div id="education" class="m-t">
-        <label for="s15">不限</label>
-        <input type="radio" value="不限" name="education" id="s15" checked="checked">
-        <label for="s16">初中</label>
-        <input type="radio" value="3k以下" name="education" id="s16">
-        <label for="s17">中专</label>
-        <input type="radio" value="3k-5k" name="education" id="s17">
-        <label for="s18">高中</label>
-        <input type="radio" value="5k-10k" name="education" id="s18">
-        <label for="s19">大专</label>
-        <input type="radio" value="10k-20k" name="education" id="s19">
-        <label for="s20">本科</label>
-        <input type="radio" value="20k-50k" name="education" id="s20">
-        <label for="s21">硕士</label>
-        <input type="radio" value="20k-50k" name="education" id="s21">
-        <label for="s22">博士</label>
-        <input type="radio" value="20k-50k" name="education" id="s22">
+    <div class="m-t-5 group">学历</div>
+    <div id="degree" class="m-t" data-keyid="degree">
+        <label for="s15" data-keyvalue="0">不限</label>
+        <input type="radio" value="不限" name="education" data-keyvalue="0" id="s15" checked="checked">
+        <label for="s16" data-keyvalue="209">初中</label>
+        <input type="radio" data-keyvalue="209" name="education" id="s16">
+        <label for="s17" data-keyvalue="208">中专</label>
+        <input type="radio" data-keyvalue="208" name="education" id="s17">
+        <label for="s18" data-keyvalue="206">高中</label>
+        <input type="radio" data-keyvalue="206" name="education" id="s18">
+        <label for="s19" data-keyvalue="202">大专</label>
+        <input type="radio" data-keyvalue="202" name="education" id="s19">
+        <label for="s20" data-keyvalue="203">本科</label>
+        <input type="radio" data-keyvalue="203" name="education" id="s20">
+        <label for="s21" data-keyvalue="204">硕士</label>
+        <input type="radio" data-keyvalue="204" name="education" id="s21">
+        <label for="s22" data-keyvalue="205">博士</label>
+        <input type="radio" data-keyvalue="205" name="education" id="s22">
     </div>
 
     <hr>
-    精确筛选
-    <div class="m-t-5">
-        <label>最大年龄</label>
-        <input type="number" value="30">
+    <div id="filter">
+        精确筛选
+        <div class="m-t-5">
+            <label>最大年龄</label>
+            <input type="number" value="0" data-keyid="max-age">
+        </div>
+        <div class="m-t-5">
+            <label>最小工龄</label>
+            <input type="number" value="0" data-keyid="min-exp">
+        </div>
+        <div class="m-t-5">
+            <label>最大工龄</label>
+            <input type="number" value="0" data-keyid="max-exp">
+        </div>
+        <div class="m-t-5">
+            <label>最低待遇要求(单位千k)</label>
+            <input type="number" value="0" data-keyid="min-salary">
+        </div>
+        <div class="m-t-5">
+            <label>过滤的公司(json array)</label>
+            <input type="text" data-keyid="company">
+        </div>
     </div>
-    <div class="m-t-5">
-        <label>最小工龄</label>
-        <input type="number" value="3">
-    </div>
-    <div class="m-t-5">
-        <label>最大工龄</label>
-        <input type="number" value="5">
-    </div>
-    <div class="m-t-5">
-        <label>最低待遇要求(单位千k)</label>
-        <input type="number" value="25">
+    <hr>
+    <div id="basic-config">
+        <div class="m-t-5">
+            <label>岗位下标</label>
+            <input type="number" data-keyid="job-index" value="-1">
+        </div>
+
+        <div class="m-t-5">
+            <label>常用语下标</label>
+            <input type="number" data-keyid="message-index" value="-1">
+        </div>
+        <div class="m-t-5">
+            <label>请求候选人页数</label>
+            <input type="number" data-keyid="page-count" value="0">
+        </div>
+
     </div>
 </div>
 <script src="../js/popup.js"></script>
