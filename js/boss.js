@@ -19,7 +19,7 @@
 
     let loadConfig = function () {
         let keyArray = ['salary', 'experience', 'degree', 'max-age', 'min-exp', 'max-exp'
-            , 'min-salary', 'job-index', 'message-index', 'page-count'];
+            , 'min-salary', 'job-index', 'message-index', 'page-count', 'company'];
 
         chrome.storage.local.get(keyArray, function (result) {
             config = result;
