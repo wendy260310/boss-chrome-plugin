@@ -146,6 +146,7 @@
                 let btnGreetSuccessNum = 0;
                 //网络请求完成了多少个
                 let btnGreetFinish = 0;
+                let uidCollection = {};
                 for (let i = 0; i < greetArray.length; ++i) {
                     let a = greetArray[i];
                     let param = 'gids=' + a.dataset.uid + "&jids=" + a.dataset.jid
@@ -162,6 +163,7 @@
                             let btnGreetResponse = JSON.parse(btnGreetHttpRequest.response);
                             if (btnGreetResponse.rescode == 1) {
                                 btnGreetSuccessNum++;
+                                uidCollection[a.dataset.uid] = 1;
                             }
                             btnGreetFinish++;
                         }
@@ -172,13 +174,19 @@
                 waiter(500, () => greetArray.length == btnGreetFinish, () => {
 
                     let communicate = document.querySelectorAll("[ka='menu-im']")[0];
-                    communicate.click();
+
+                    if (Object.values(communicate.closest('.menu-chat').classList)
+                            .indexOf("cur") == -1) {
+                        communicate.click();
+                    }
+
                     //找到chat room
                     let chatContainer = document.getElementsByClassName('chat-container')[0];
                     let chatMessage = chatContainer.getElementsByClassName('chat-message')[0];
                     let btnSend = chatContainer.getElementsByClassName('btn-send')[0];
 
-                    waiter(500, () => chatContainer.style.display === 'block'
+                    waiter(500, () => Object.values(communicate.closest('.menu-chat').classList)
+                            .indexOf("cur") > -1
                         , () => {
                             //进到聊天了，然后要点开具体的某个人
                             let mainList = document.getElementsByClassName('main-list')[0]
@@ -191,15 +199,21 @@
                         if (curIndex >= maxIndex)
                             return;
                         let li = mainList[curIndex];
-                        li.getElementsByTagName('a')[0].click();
-                        waiter(500, () => Object.values(li.classList).indexOf("cur") > -1,
-                            () => {
-                                chatMessage.textContent = message;
-                                btnSend.click();
-                                setTimeout(() => {
-                                }, 1000);
-                                sendMessageOneByOne(curIndex + 1, maxIndex, mainList, chatMessage, btnSend);
-                            });
+                        let clickA = li.getElementsByTagName('a')[0];
+                        if (uidCollection.hasOwnProperty(clickA.dataset.uid)) {
+                            delete uidCollection[clickA.dataset.uid];
+                            clickA.click();
+                            waiter(500, () => Object.values(li.classList).indexOf("cur") > -1,
+                                () => {
+                                    chatMessage.textContent = message;
+                                    btnSend.click();
+                                    setTimeout(() => {
+                                        sendMessageOneByOne(curIndex + 1, maxIndex, mainList, chatMessage, btnSend);
+                                    }, 1000);
+                                });
+                        } else {
+                            sendMessageOneByOne(curIndex + 1, maxIndex, mainList, chatMessage, btnSend);
+                        }
                     }
                 })
             });

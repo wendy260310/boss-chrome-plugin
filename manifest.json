@@ -1,6 +1,6 @@
 {
   "name": "boss直聘插件",
-  "version": "1.0",
+  "version": "1.2",
   "description": "boss直聘一键勾搭",
   "manifest_version": 2,
   "permissions": [
