@@ -3,6 +3,7 @@
     let jobId;
     let message;
     let config = undefined;
+    let cityIndex = 0;
     let waiter = function (intervel, breakCondition, doAfterBreak) {
         if (!intervel)
             intervel = 1000;
@@ -19,10 +20,18 @@
 
     let loadConfig = function () {
         let keyArray = ['salary', 'experience', 'degree', 'max-age', 'min-exp', 'max-exp'
-            , 'min-salary', 'job-index', 'message-index', 'page-count', 'company'];
-
-        chrome.storage.local.get(keyArray, function (result) {
-            config = result;
+            , 'min-salary', 'job-index', 'page-count', 'company', 'message'];
+        chrome.storage.local.get("city", function (result) {
+            if (result && result["city"]) {
+                cityIndex = result["city"]
+            }
+            for (let key in keyArray) {
+                keyArray[key] = keyArray[key] + "-" + cityIndex
+            }
+            console.log(keyArray);
+            chrome.storage.local.get(keyArray, function (result) {
+                config = result;
+            });
         });
     }
 
@@ -45,29 +54,15 @@
 
     }
 
-    let getReply = function () {
-        let r = new XMLHttpRequest();
-        let url = 'https://www.zhipin.com/setting/replyword/list.json';
-
-        r.onreadystatechange = () => {
-            if (r.readyState == XMLHttpRequest.DONE && r.status == 200) {
-                message = JSON.parse(r.response).replyWords[config['message-index'] - 1];
-            }
-        }
-        r.open('GET', url, true);
-        r.send();
-    };
-
-
     let filter = function (greetAnchor) {
-        let maxAge = config['max-age'];
-        let maxWorkAge = config['max-exp'];
-        let minWorkAge = config['min-exp'];
-        let minSalary = config['min-salary'];
+        let maxAge = config['max-age' + "-" + cityIndex];
+        let maxWorkAge = config['max-exp' + "-" + cityIndex];
+        let minWorkAge = config['min-exp' + "-" + cityIndex];
+        let minSalary = config['min-salary' + "-" + cityIndex];
 
         //取到现在的公司
         let exp = greetAnchor.getElementsByClassName('experience')[0];
-        let skipCompanyStr = config['company'];
+        let skipCompanyStr = config['company' + "-" + cityIndex];
         let skipCompany;
         if (skipCompanyStr) {
             skipCompany = JSON.parse(skipCompanyStr);
@@ -101,11 +96,14 @@
 
     loadConfig();
     waiter(500, () => config, () => {
-        getJob(config['job-index'] - 1);
+        getJob(config['job-index' + "-" + cityIndex] - 1);
         waiter(500, () => jobId, () => {
-            getReply();
+            message = config['message' + "-" + cityIndex];
+            if (!message) {
+                return;
+            }
             let greetArray = [];
-            let totalPage = config['page-count']
+            let totalPage = config['page-count' + "-" + cityIndex]
             if (!totalPage) {
                 alert("没有设置候选人页数，默认是1");
                 totalPage = 1;
@@ -115,8 +113,9 @@
             for (let m = 1; m <= totalPage; ++m) {
                 let getGeekHttpRequest = new XMLHttpRequest();
                 let geekUrl = 'https://www.zhipin.com/boss/recommend/geeks.json?status=0&jobid=' + jobId
-                    + '&salary=' + (config['salary'] || 0) + '&experience=' + (config['experience'] || 0) +
-                    '&degree=' + (config['degree'] || 0) + '&_=1543914502205&page=' + m;
+                    + '&salary=' + (config['salary' + "-" + cityIndex] || 0) + '&experience=' +
+                    (config['experience' + "-" + cityIndex] || 0) +
+                    '&degree=' + (config['degree' + "-" + cityIndex] || 0) + '&_=1543914502205&page=' + m;
                 getGeekHttpRequest.onreadystatechange = function () {
                     if (getGeekHttpRequest.readyState == XMLHttpRequest.DONE
                         && getGeekHttpRequest.status == 200) {

@@ -29,6 +29,14 @@
 <div id="main-panel">
     <button id="say-hello">一键打招呼</button>
     <hr>
+    <label>热门城市(不同城市不同配置)</label>
+    <select id="city" data-keyid="city">
+        <option>北京</option>
+        <option>深圳</option>
+        <option>上海</option>
+        <option>杭州</option>
+    </select>
+    <hr>
     <span>简历筛选条件：同boss</span>
     <div class="m-t-5">薪水</div>
     <div id="salary" class="m-t group" data-keyid="salary">
@@ -119,12 +127,13 @@
         </div>
 
         <div class="m-t-5">
-            <label>常用语下标</label>
-            <input type="number" data-keyid="message-index" value="-1">
-        </div>
-        <div class="m-t-5">
             <label>请求候选人页数</label>
             <input type="number" data-keyid="page-count" value="0">
+        </div>
+
+        <div class="m-t-5">
+            <label>自定义打招呼用语</label>
+            <input data-keyid="message">
         </div>
 
     </div>
