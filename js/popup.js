@@ -30,7 +30,6 @@
         }
         //input config
         let inputConfig = [filter, basicConfig];
-        console.log(cityIndex)
         for (let key in inputConfig) {
             inputConfig[key].addEventListener("change",
                 (event) => saveInputConfig(event));
@@ -85,7 +84,7 @@
 
     function saveInputConfig(e) {
         let keyId = e.target.dataset.keyid + "-" + cityIndex;
-        let keyValue = e.target.value;
+        let keyValue = e.target.value || e.target.checked;
         chrome.storage.local.set({[keyId]: keyValue}, undefined);
     }
 
@@ -124,7 +123,11 @@
             let key = input[i].dataset.keyid + "-" + cityIndex;
             chrome.storage.local.get([key], function (result) {
                 if (result && result[key]) {
-                    input[i].value = result[key];
+                    if (input[i].type === 'checkbox') {
+                        input[i].checked = result[key];
+                    } else {
+                        input[i].value = result[key];
+                    }
                 }
             })
         }

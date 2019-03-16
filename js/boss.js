@@ -20,7 +20,7 @@
 
     let loadConfig = function () {
         let keyArray = ['salary', 'experience', 'degree', 'max-age', 'min-exp', 'max-exp'
-            , 'min-salary', 'job-index', 'page-count', 'company', 'message'];
+            , 'min-salary', 'job-index', 'page-count', 'company', 'message', 'uni-filter'];
         chrome.storage.local.get("city", function (result) {
             if (result && result["city"]) {
                 cityIndex = result["city"]
@@ -28,7 +28,6 @@
             for (let key in keyArray) {
                 keyArray[key] = keyArray[key] + "-" + cityIndex
             }
-            console.log(keyArray);
             chrome.storage.local.get(keyArray, function (result) {
                 config = result;
             });
@@ -59,6 +58,7 @@
         let maxWorkAge = config['max-exp' + "-" + cityIndex];
         let minWorkAge = config['min-exp' + "-" + cityIndex];
         let minSalary = config['min-salary' + "-" + cityIndex];
+        let universityFilter = config['uni-filter-' + cityIndex];
 
         //取到现在的公司
         let exp = greetAnchor.getElementsByClassName('experience')[0];
@@ -67,7 +67,7 @@
         if (skipCompanyStr) {
             skipCompany = JSON.parse(skipCompanyStr);
         }
-
+        console.log(greetAnchor)
         if (exp && skipCompany) {
             for (let c in skipCompany) {
                 if (exp.innerText.indexOf(skipCompany[c]) > -1) {
@@ -75,6 +75,45 @@
                 }
             }
         }
+        if (universityFilter) {
+            if (exp.nextElementSibling) {
+                let university = [].reduce.call(exp.nextElementSibling.childNodes, function (a, b) {
+                    return a.trim() + (b.nodeType === 3 ? b.textContent : '');
+                }, '').split(" ");
+                console.log(university);
+                //包含了专业,university 例子：["西北大学", "软件工程"]
+                if (university.length > 1) {
+                    let majorArray = ['计算机', '软件', '电子', '信息', '自动化', '通信'];
+                    let passMajor = false;
+                    for (let i = 0; i < majorArray.length; ++i) {
+                        if (university[1].indexOf(majorArray[i]) > -1) {
+                            passMajor = true;
+                            break;
+                        }
+                    }
+                    if (!passMajor) {
+                        return false;
+                    }
+                }
+                let uniArray = ['清华', '北大', '北航', '北京航空航天', '北京理工', '北京师范', '北京邮电'
+                    , '哈尔滨工业', '吉林大学', '东北大学', '东北师范', '大连理工', '西安交通大学', '西北工业', '湖南大学', '中南大学'
+                    , '西安电子科技', '电子科技', '四川大学', '重庆大学', '重庆邮电', '北京科技', '北京交通', '武汉大学', '华中科技', '武汉理工'
+                    , '复旦', '南开', '天津大学', '南京大学', '东南大学', '厦门大学', '中山大学', '华南理工', '浙江大学', '上海交通大学', '同济']
+                let passUni = false;
+                for (let i = 0; i < uniArray.length; ++i) {
+                    if (university[0].indexOf(uniArray[i]) > -1) {
+                        passUni = true;
+                        break;
+                    }
+                }
+                if (!passUni) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
 
         let labelText = greetAnchor.getElementsByClassName('label-text');
         let currentAge = labelText[3].textContent.substr(0, labelText[3].textContent.length - 1);
