@@ -54,10 +54,10 @@
     }
 
     let filter = function (greetAnchor) {
-        let maxAge = config['max-age' + "-" + cityIndex];
-        let maxWorkAge = config['max-exp' + "-" + cityIndex];
-        let minWorkAge = config['min-exp' + "-" + cityIndex];
-        let minSalary = config['min-salary' + "-" + cityIndex];
+        let maxAge = config['max-age' + "-" + cityIndex] || 100;
+        let maxWorkAge = config['max-exp' + "-" + cityIndex] || 100;
+        let minWorkAge = config['min-exp' + "-" + cityIndex] || 0;
+        let minSalary = config['min-salary' + "-" + cityIndex] || 0;
         let universityFilter = config['uni-filter-' + cityIndex];
 
         //取到现在的公司
@@ -67,7 +67,6 @@
         if (skipCompanyStr) {
             skipCompany = JSON.parse(skipCompanyStr);
         }
-        console.log(greetAnchor)
         if (exp && skipCompany) {
             for (let c in skipCompany) {
                 if (exp.innerText.indexOf(skipCompany[c]) > -1) {
@@ -80,7 +79,6 @@
                 let university = [].reduce.call(exp.nextElementSibling.childNodes, function (a, b) {
                     return a.trim() + (b.nodeType === 3 ? b.textContent : '');
                 }, '').split(" ");
-                console.log(university);
                 //包含了专业,university 例子：["西北大学", "软件工程"]
                 if (university.length > 1) {
                     let majorArray = ['计算机', '软件', '电子', '信息', '自动化', '通信'];
@@ -185,6 +183,10 @@
                 //网络请求完成了多少个
                 let btnGreetFinish = 0;
                 let uidCollection = {};
+                if (greetArray.length === 0) {
+                    alert("没有找到合适的候选人")
+                    return;
+                }
                 for (let i = 0; i < greetArray.length; ++i) {
                     let a = greetArray[i];
                     let param = 'gids=' + a.dataset.uid + "&jids=" + a.dataset.jid
