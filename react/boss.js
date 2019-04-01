@@ -61,7 +61,7 @@ class BossApp {
                         return false;
                     }
                 }
-                let uniArray = ['清华', '北大', '北航', '北京航空航天', '北京理工', '北京师范', '北京邮电', '中国人民大学'
+                let uniArray = ['清华', '北大', '北航', '北京航空航天', '北京理工', '北京师范', '北京邮电', '中国人民大学',"哈工大"
                     , '哈尔滨工业', '吉林大学', '东北大学', '东北师范', '大连理工', '西安交通大学', '西北工业', '湖南大学', '中南大学'
                     , '西安电子科技', '电子科技', '四川大学', '重庆大学', '重庆邮电', '北京科技', '北京交通', '武汉大学', '华中科技', '武汉理工'
                     , '复旦', '南开', '天津大学', '南京大学', '东南大学', '厦门大学', '中山大学', '华南理工', '浙江大学', '上海交通大学', '同济']
@@ -104,20 +104,25 @@ class BossApp {
         let jobRequest = new XMLHttpRequest();
         let url = 'https://www.zhipin.com/bossweb/joblist/data.json?' +
             'page=1&type=0&status=0&_=1543980515163';
-        return new Promise((resolve => {
+        return new Promise((resolve, reject) => {
             jobRequest.onreadystatechange = () => {
-                if (jobRequest.readyState == XMLHttpRequest.DONE
-                    && jobRequest.status == 200) {
-                    let ret = JSON.parse(jobRequest.response);
-                    let doc = document.createElement("div");
-                    doc.innerHTML = ret.html;
-                    resolve([doc.getElementsByClassName('link-recommend')[jobIndex - 1].dataset.jobid
-                        , config]);
+                if (jobRequest.readyState === XMLHttpRequest.DONE) {
+                    if (jobRequest.status == 200) {
+                        let ret = JSON.parse(jobRequest.response);
+                        let doc = document.createElement("div");
+                        doc.innerHTML = ret.html;
+                        resolve([doc.getElementsByClassName('link-recommend')[jobIndex - 1].dataset.jobid
+                            , config]);
+
+                    } else {
+                        reject("http status in get job");
+                    }
                 }
             }
+            jobRequest.onerror = () => reject("http error in get job ");
             jobRequest.open("GET", url, true);
             jobRequest.send();
-        }));
+        });
     }
 
     static loadCity() {
@@ -136,7 +141,7 @@ class BossApp {
     static getGeek(geekUrl, config, city) {
         let getGeekHttpRequest = new XMLHttpRequest();
         let that = this;
-        return new Promise((resolve => {
+        return new Promise(resolve => {
             getGeekHttpRequest.onreadystatechange = function () {
                 if (getGeekHttpRequest.readyState == XMLHttpRequest.DONE
                     && getGeekHttpRequest.status == 200) {
@@ -160,9 +165,10 @@ class BossApp {
                     }
                 }
             }
+            getGeekHttpRequest.onerror = () => resolve([])
             getGeekHttpRequest.open("GET", geekUrl, true);
             getGeekHttpRequest.send();
-        }));
+        });
     }
 
     static greet(greetElement) {
@@ -171,24 +177,28 @@ class BossApp {
         let param = 'gids=' + greetElement.dataset.uid + "&jids=" + greetElement.dataset.jid
             + '&expectIds=' + greetElement.dataset.expect + "&lids=" + greetElement.dataset.lid;
 
+
         let btnGreetHttpRequest = new XMLHttpRequest();
         btnGreetHttpRequest.open("POST", btnGreetUrl, false);
         btnGreetHttpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
         return new Promise((resolve, reject) => {
             btnGreetHttpRequest.onreadystatechange = () => {
-                if (btnGreetHttpRequest.readyState == XMLHttpRequest.DONE &&
-                    btnGreetHttpRequest.status == 200) {
-                    let btnGreetResponse = JSON.parse(btnGreetHttpRequest.response);
-                    if (btnGreetResponse.rescode == 1) {
-                        resolve(greetElement.dataset.uid);
+                if (btnGreetHttpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (btnGreetHttpRequest.status === 200) {
+                        let btnGreetResponse = JSON.parse(btnGreetHttpRequest.response);
+                        if (btnGreetResponse.rescode == 1) {
+                            resolve(greetElement.dataset.uid);
+                        } else {
+                            reject("rescode not equal 1")
+                        }
+
                     } else {
-                        reject("rescode not equal 1")
+                        reject("http error in greet")
                     }
-                } else {
-                    reject("http error in greet")
                 }
             }
+            btnGreetHttpRequest.onerror = () => reject("http error in greet")
             btnGreetHttpRequest.send(param);
         })
     }
@@ -226,7 +236,7 @@ class BossApp {
                     greetArray = greetArray.concat(t[i]);
                 }
             }
-            if (greetArray.length == 0) {
+            if (greetArray.length === 0) {
                 alert("没有合适的候选人了");
                 return Promise.reject("empty");
             }
@@ -251,9 +261,35 @@ class BossApp {
                     .indexOf("cur") == -1) {
                 communicate.click();
             }
-            return this.waiter(1000, () => Object.values(communicate.closest('.menu-chat').classList)
-                .indexOf("cur") > -1, uidCollection);
+            return this.waiter(1000,
+                (function () {
+                    let tmp = undefined;
+                    return function () {
+                        if (Object.values(communicate.closest('.menu-chat').classList)
+                                .indexOf("cur") > -1) {
+                            if (tmp === undefined) {
+                                tmp = document.getElementsByClassName('main-list')[0]
+                                    .getElementsByTagName('li')[0].getElementsByTagName('a')[0]
+                                    .dataset.uid;
+                                return false;
+                            }
+
+                            let cur = document.getElementsByClassName('main-list')[0]
+                                .getElementsByTagName('li')[0].getElementsByTagName('a')[0]
+                                .dataset.uid;
+                            if (cur === tmp) {
+                                return true;
+                            }
+                            tmp = cur;
+                            return false;
+                        } else {
+                            return false;
+                        }
+                    }
+                })()
+                , uidCollection);
         }).then((uidCollection) => {
+            chrome.runtime.sendMessage({"msg": "正在发送常用语..."});
             let chatContainer = document.getElementsByClassName('chat-container')[0];
             let chatMessage = chatContainer.getElementsByClassName('chat-message')[0];
             let btnSend = chatContainer.getElementsByClassName('btn-send')[0];
