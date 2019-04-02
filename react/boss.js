@@ -61,8 +61,8 @@ class BossApp {
                         return false;
                     }
                 }
-                let uniArray = ['清华', '北大', '北航', '北京航空航天', '北京理工', '北京师范', '北京邮电', '中国人民大学',"哈工大"
-                    , '哈尔滨工业', '吉林大学', '东北大学', '东北师范', '大连理工', '西安交通大学', '西北工业', '湖南大学', '中南大学'
+                let uniArray = ['清华', '北大', '北航', '北京航空航天', '北京理工', '北京师范', '北京邮电', '中国人民大学', "哈工大", "中科院", "中国科学院"
+                    , '哈尔滨工业', '吉林大学', '东北大学', '东北师范', '大连理工', '西安交通大学', '西北工业', '湖南大学', '中南大学', "华科", "武大"
                     , '西安电子科技', '电子科技', '四川大学', '重庆大学', '重庆邮电', '北京科技', '北京交通', '武汉大学', '华中科技', '武汉理工'
                     , '复旦', '南开', '天津大学', '南京大学', '东南大学', '厦门大学', '中山大学', '华南理工', '浙江大学', '上海交通大学', '同济']
                 let passUni = false;
@@ -93,8 +93,8 @@ class BossApp {
         let currentSalaryStr = currentSalarySpan.split("-")[0];
         let currentSalary = currentSalaryStr.substr(0, currentSalaryStr.length - 1);
 
-        return (!maxAge || maxAge >= currentAge) && (!minWorkAge || minWorkAge <= workAge)
-            && (!maxWorkAge || maxWorkAge >= workAge) && (!minSalary || currentSalary >= minSalary);
+        return (parseInt(maxAge) >= parseInt(currentAge)) && (parseInt(minWorkAge) <= parseInt(workAge))
+            && (parseInt(maxWorkAge) >= parseInt(workAge)) && (parseInt(currentSalary) >= parseInt(minSalary));
 
     }
 
